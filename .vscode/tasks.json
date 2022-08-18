@@ -1,0 +1,48 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Generate",
+      "type": "shell",
+      "command": "cmake",
+      "args": ["-H.", "-Bbuild"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "cmake",
+      "args": ["--build", "build", "--", "-j4"],
+      "group": "build",
+      "problemMatcher": [],
+      "dependsOn": [
+          "Generate"
+      ]
+    },
+    {
+      "label": "Run tests",
+      "type": "shell",
+      "command": "${workspaceFolder}/build/test/run_tests",
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "group": "build",
+      "problemMatcher": ["$gcc"],
+      "dependsOn": ["Build"]
+    },
+    {
+        "label": "Run benchmarks",
+        "type": "shell",
+        "command": "${workspaceFolder}/build/benchmark/bench",
+        "options": {
+          "cwd": "${workspaceFolder}/build"
+        },
+        "group": "build",
+        "problemMatcher": ["$gcc"],
+        "dependsOn": ["Build"]
+      }
+  ]
+}
